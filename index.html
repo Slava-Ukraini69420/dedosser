@@ -9,6 +9,8 @@
   ];
 
   async function request(i, ord) {
+    const currentRequestNo = SITES.length * i + ord;
+    console.log("started request: ", currentRequestNo);
     i++;
 
     const siteToFetch = SITES[Math.floor(Math.random() * SITES.length)];
@@ -18,11 +20,11 @@
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
-        message("Requests: " + (SITES.length * i + ord));
+        message("Requests: " + currentRequestNo);
         request(i, ord);
       })
       .catch((error) => {
-        message("Requests: " + (SITES.length * i + ord) + " Server is down!");
+        message("Requests: " + currentRequestNo + " Server is down!");
         request(i, ord);
       });
   }
@@ -30,16 +32,10 @@
     document.getElementById("message").innerHTML =
       document.getElementById("message").innerHTML + "<br><br>" + text;
   }
-  request(0, 1);
-  request(0, 2);
-  request(0, 3);
-  request(0, 4);
-  request(0, 5);
-  request(0, 6);
-  request(0, 7);
-  request(0, 8);
-  request(0, 9);
-  request(0, 10);
+
+  for (let ord = 0; ord < SITES.length; ord++) {
+    request(0, ord + 1);
+  }
 
   // reload to pick up any new changes
   const TEN_MINUTES = 10 * 60 * 1000;
